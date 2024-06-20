@@ -1,0 +1,18 @@
+name: Branch Name Check
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
+          if [[ ! $BRANCH_NAME =~ ^GAIA-[0-9]* ]]; then
+            echo "Branch $BRANCH_NAME does not start with: 'GAIA-<number>'"
+            exit 1
+          fi
